@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { getLocaleDateFormat } from '@angular/common';
+import { CommonServiceService } from './common-service.service';
 
 @Component({
   selector: 'app-root',
@@ -6,54 +8,32 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Angular-workshop';
+  object = [];
 
-  score: number;
-  name: string;
+  request = {
+    key1:null,
+    key2:null
+  }
+  result:number=null;
+  msg:string=null;
 
-  student:any = {
-    name: "Peter",
-    studentID: "5921608220",
-    weight: 68,
-    height: 178
+  constructor(private service: CommonServiceService) {
+    //this.getData();
+    //this. postData();
   }
 
-  studentList = [
-    {
-      name: "Peter2",
-      studentID: "5921608451",
-      weight: 61,
-      height: 172
-    },
-    {
-      name: "Peter3",
-      studentID: "5921601234",
-      weight: 60,
-      height: 168
-    },
-    {
-      name: "Peter4",
-      studentID: "5921605678",
-      weight: 64,
-      height: 175
-    }
-  ]
+  getData(){
+      this.service.getData(this.request).subscribe((response:any)=> {
+        console.log(response);
+        this.result = response.result;
+      })
+  }
 
-  constructor() {
-    this.student.bmi = (this.student.weight/((this.student.height/100)*(this.student.height/100))).toFixed(2);
-    this.studentList.map((object,index)=>{
-      let obj:any = object;
-      obj.bmi = (object.weight/((object.height/100)*(object.height/100))).toFixed(2);
-      return obj;
+  postData(){
+    this.service.postData(this.request).subscribe((response:any)=>{
+      console.log(response);
+      this.msg = response.msg;
+      this.result = response.result;
     })
-    console.log(this.studentList);
-
-    this.studentList.forEach((object,index)=>{
-        console.log(object);
-        console.log(index);
-        
-        
-    })
-    
   }
 }
